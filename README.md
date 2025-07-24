@@ -12,6 +12,11 @@ A React-based user management application built with TypeScript, Vite, and Tailw
 - **Search**: Real-time search functionality for users
 - **Responsive Design**: Mobile-friendly interface
 
+## Bonus Features
+- **Search Users**: Search through the users list seamlessly
+- **Test Suite**: 3 Comprehensive test suites on important features for code integrity
+- **Added Motion**: Gesture animations to make the app feel more intuitive, fun and alive
+
 ## Tech Stack
 
 - **Frontend**: React 19, TypeScript, Vite

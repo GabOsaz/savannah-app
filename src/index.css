@@ -1,0 +1,60 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+@import "tailwindcss";
+
+/* Set Inter as the default font family */
+* {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@layer base {
+  :root {
+    --color-gray-900: #181D27;
+    --color-gray-700: #334155;
+    --color-gray-600: #535862;
+    --color-gray-500: #717680;
+    --color-gray-200: #E9EAEB;
+    --color-brand-50: #F9F5FF;
+    --color-brand-600: #7F56D9;
+  }
+}
+
+/* Utility classes using CSS variables */
+.text-brand {
+  color: var(--color-brand-600);
+}
+
+.bg-brand {
+  background-color: var(--color-brand-600);
+}
+
+.bg-brand-light {
+  background-color: var(--color-brand-50);
+}
+
+.text-gray-dark {
+  color: var(--color-gray-900);
+}
+
+.text-gray-medium {
+  color: var(--color-gray-600);
+}
+
+.text-gray-light {
+  color: var(--color-gray-500);
+}
+
+.border-gray-200 {
+  border-color: var(--color-gray-200);
+}
+
+button {
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+}

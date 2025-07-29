@@ -17,11 +17,11 @@ function Users() {
   }
 
   return (
-    <div className="max-w-[80%] lg:min-w-[856px] mx-auto">
-      <h1 className="text-4xl md:text-6xl font-medium text-[#181D27]">Users</h1>
+    <div className="max-w-[80%] lg:min-w-[856px] mx-auto space-y-6">
+      <h1 className="text-6xl font-medium text-[#181D27]">Users</h1>
 
       {/* Search Bar */}
-      <div className="mt-6">
+      <div className="">
         <SearchBar
           inputRef={componentLogic.inputRef}
           searchTerm={componentLogic.searchTerm}
@@ -38,8 +38,8 @@ function Users() {
       />
 
       {/* Pagination */}
-      {componentLogic.totalPages > 1 && !componentLogic.searchTerm && (
-        <div className="mt-6">
+      {componentLogic.totalPages > 1 && (
+        <div className="">
           <Pagination
             currentPage={componentLogic.currentPage}
             totalPages={componentLogic.totalPages}

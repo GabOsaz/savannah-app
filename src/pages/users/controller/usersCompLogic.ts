@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router";
+import { useNavigate, useLocation } from "react-router";
 import { useDebounce } from "../../../hooks/useDebounce";
 import { useGetUsers, useGetTotalUsersCount } from "../model/queries";
 
@@ -12,7 +12,16 @@ export interface User {
 
 export const useUsersCompLogic = () => {
   const navigate = useNavigate();
-  const [currentPage, setCurrentPage] = useState(1);
+  const location = useLocation();
+
+  // Determine initial page from the URL (e.g. /?page=2)
+  const getPageFromURL = () => {
+    const params = new URLSearchParams(location.search);
+    const pageParam = parseInt(params.get("page") || "1", 10);
+    return isNaN(pageParam) || pageParam < 1 ? 1 : pageParam;
+  };
+
+  const [currentPage, setCurrentPage] = useState<number>(() => getPageFromURL());
   const [searchTerm, setSearchTerm] = useState("");
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -33,15 +42,29 @@ export const useUsersCompLogic = () => {
     }
   }, [usersQuery.isFetching]);
 
-  const totalUsersQuery = useGetTotalUsersCount();
+  const totalUsersQuery = useGetTotalUsersCount(debouncedSearchTerm);
 
   const handleRowClick = (userId: string) => {
-    navigate(`/users/${userId}`);
+    navigate({ pathname: `/users/${userId}`, search: location.search });
   };
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
+
+    const params = new URLSearchParams(location.search);
+    params.set("page", page.toString());
+
+    navigate({ pathname: "/", search: params.toString() });
   };
+
+  // Sync state with URL if the user manually updates the query string or navigates
+  useEffect(() => {
+    const pageFromURL = getPageFromURL();
+    if (pageFromURL !== currentPage) {
+      setCurrentPage(pageFromURL);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [location.search]);
 
   const users = (usersQuery.data || []) as User[];
   const totalUsers = (totalUsersQuery.data || 0) as number;

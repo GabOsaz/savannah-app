@@ -8,10 +8,11 @@ export const useGetUsers = (page: number = 1, searchTerm: string = '', limit: nu
     queryFn: async () => {
       await ensureDatabaseInitialized();
       
+      const offset = (page - 1) * limit;
+
       if (searchTerm.trim()) {
-        return await databaseService.searchUsers(searchTerm);
+        return await databaseService.searchUsers(searchTerm, limit, offset);
       } else {
-        const offset = (page - 1) * limit;
         return await databaseService.getUsersWithPagination(limit, offset);
       }
     },
@@ -19,12 +20,12 @@ export const useGetUsers = (page: number = 1, searchTerm: string = '', limit: nu
   });
 };
 
-export const useGetTotalUsersCount = () => {
+export const useGetTotalUsersCount = (searchTerm: string = '') => {
   return useQuery({
-    queryKey: ['users', 'count'],
+    queryKey: ['users', 'count', searchTerm],
     queryFn: async () => {
       await ensureDatabaseInitialized();
-      return await databaseService.getTotalUsersCount();
+      return await databaseService.getTotalUsersCount(searchTerm);
     },
     enabled: true,
   });

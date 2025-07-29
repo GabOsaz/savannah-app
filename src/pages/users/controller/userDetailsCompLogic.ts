@@ -20,6 +20,7 @@ const useUserDetailsCompLogic = () => {
 
   const user = data?.user || null;
   const posts = data?.posts || [];
+  console.log(posts);
 
   const isCreatePostButtonDisabled = !id || !postDetails.title.trim() || !postDetails.content.trim() || isCreatingPost;
 

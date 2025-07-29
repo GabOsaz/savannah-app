@@ -1,4 +1,4 @@
-import { Link } from "react-router";
+import { Link, useLocation } from "react-router";
 
 interface BackNavigationProps {
   to: string;
@@ -6,9 +6,11 @@ interface BackNavigationProps {
 }
 
 function BackNavigation({ to, label }: BackNavigationProps) {
+  const location = useLocation();
+
   return (
     <Link
-      to={to}
+      to={{ pathname: to, search: location.search }}
       className="group cursor-pointer inline-flex items-center text-sm text-gray-medium mb-4 space-x-2"
     >
       <span className="group-hover:-translate-x-1 transition-transform duration-300 ease-out">

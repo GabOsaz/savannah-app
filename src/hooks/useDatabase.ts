@@ -85,11 +85,11 @@ export const useDatabase = (): UseDatabaseReturn => {
     }
   }, []);
 
-  const searchUsers = useCallback(async (searchTerm: string) => {
+  const searchUsers = useCallback(async (searchTerm: string, limit: number = 10, offset: number = 0) => {
     try {
       setIsLoading(true);
       setError(null);
-      const result = await databaseService.searchUsers(searchTerm);
+      const result = await databaseService.searchUsers(searchTerm, limit, offset);
       setUsers(result);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to search users');
@@ -111,10 +111,10 @@ export const useDatabase = (): UseDatabaseReturn => {
     }
   }, []);
 
-  const getTotalUsersCount = useCallback(async () => {
+  const getTotalUsersCount = useCallback(async (searchTerm: string = '') => {
     try {
       setError(null);
-      const count = await databaseService.getTotalUsersCount();
+      const count = await databaseService.getTotalUsersCount(searchTerm);
       setTotalUsers(count);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to get total users count');

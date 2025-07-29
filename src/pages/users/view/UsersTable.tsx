@@ -13,7 +13,7 @@ const UsersTable = ({
   handleRowClick: (id: string) => void;
 }) => {
   return (
-    <div className="bg-white rounded-lg border border-gray-200 overflow-hidden mt-6">
+    <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
       <div className="overflow-x-auto">
         <table className="w-full">
           <thead>
@@ -50,8 +50,8 @@ const UsersTable = ({
                 >
                   <Td className="font-medium">{user.name}</Td>
                   <Td className="font-normal lowercase">{user.email}</Td>
-                  <Td className="max-w-[392px] font-normal">
-                    <div className="truncate" title={user.address}>
+                  <Td className="w-full font-normal">
+                    <div className="truncate w-full" title={user.address}>
                       {user.address}
                     </div>
                   </Td>
@@ -69,7 +69,7 @@ export default UsersTable;
 
 const Th = ({ children }: { children: React.ReactNode }) => {
   return (
-    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+    <th className="px-6 py-3 text-left text-xs font-medium text-gray-medium tracking-wider">
       {children}
     </th>
   );
@@ -84,7 +84,7 @@ const Td = ({
 }) => {
   return (
     <td
-      className={`px-6 py-4 whitespace-nowrap text-sm text-gray-600 ${className}`}
+      className={`px-6 py-[26px] max-w-[392px] whitespace-nowrap text-sm text-gray-600 ${className}`}
     >
       {children}
     </td>

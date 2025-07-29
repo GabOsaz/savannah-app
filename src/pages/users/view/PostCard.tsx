@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+// removed ConfirmModal usage; PostCard delegates deletion handling to parent
 
 interface Post {
   id: string;
@@ -31,7 +32,7 @@ function PostCard({ post, onDelete, isDeleting }: PostCardProps) {
     >
       {/* Delete Button */}
       <motion.button
-        className="absolute top-1 right-1 hover:bg-gray-100 rounded-full transition-colors p-1 cursor-pointer"
+        className="absolute top-1 right-1 hover:bg-red-50 rounded-sm transition-colors p-1 cursor-pointer"
         onClick={() => onDelete(post.id)}
         disabled={isDeleting}
         initial={{ opacity: 0, scale: 0.8 }}
@@ -43,10 +44,10 @@ function PostCard({ post, onDelete, isDeleting }: PostCardProps) {
           src="/delete.svg" 
           alt="Delete" 
           className="w-6 h-6"
-          whileHover={{ rotate: 180 }}
           transition={{ type: "spring", stiffness: 400, damping: 25 }}
         />
       </motion.button>
+
 
       <motion.h3 
         className="text-lg font-medium text-gray-medium mt-2 mb-3"

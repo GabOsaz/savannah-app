@@ -47,7 +47,7 @@ function Pagination({
       </Button>
 
       {/* Page Numbers */}
-      <div className="items-center space-x-1 hidden sm:flex">
+      <div className="items-center hidden sm:flex">
         {visiblePages.map((page, index) => (
           <div key={index}>
             {page === "..." ? (
@@ -58,7 +58,7 @@ function Pagination({
                 className={`px-4 py-2 text-sm font-medium transition-colors duration-250 ease-in-out text-brand rounded-lg ${
                   page === currentPage
                     ? "bg-brand-light"
-                    : "bg-white hover:bg-[var(--color-brand-50)]"
+                    : "bg-white hover:bg-[var(--color-brand-50)] text-gray-medium"
                 }`}
               >
                 {page}

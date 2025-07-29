@@ -158,25 +158,27 @@ class DatabaseService {
         return null;
       }
 
-      // Insert new post
-      await this.query(`
-        INSERT INTO posts (user_id, title, body, created_at)
-        VALUES (?, ?, ?, datetime('now'))
-      `, [userId, title, content]);
+      // Generate a unique UUID for the new post ID to ensure uniqueness and non-null value
+      const newId = crypto.randomUUID();
 
-      // Get the inserted post
+      // Insert new post with explicit UUID id
+      await this.query(`
+        INSERT INTO posts (id, user_id, title, body, created_at)
+        VALUES (?, ?, ?, ?, datetime('now'))
+      `, [newId, userId, title, content]);
+
+      // Fetch the freshly inserted post by its id
       const newPost = await this.query(`
         SELECT 
-          p.id,
-          p.title,
-          p.body as content,
-          p.user_id,
-          p.created_at
-        FROM posts p
-        WHERE p.user_id = ? AND p.title = ? AND p.body = ?
-        ORDER BY p.created_at DESC
+          id,
+          title,
+          body as content,
+          user_id,
+          created_at
+        FROM posts
+        WHERE id = ?
         LIMIT 1
-      `, [userId, title, content]);
+      `, [newId]);
 
       return newPost[0] as unknown as Post || null;
     } catch (error) {
@@ -198,7 +200,7 @@ class DatabaseService {
     }
   }
 
-  async searchUsers(searchTerm: string): Promise<User[]> {
+  async searchUsers(searchTerm: string, limit: number = 10, offset: number = 0): Promise<User[]> {
     const result = await this.query(`
       SELECT 
         u.id,
@@ -212,7 +214,9 @@ class DatabaseService {
       FROM users u
       LEFT JOIN addresses a ON u.id = a.user_id
       WHERE u.name LIKE ? OR u.email LIKE ?
-    `, [`%${searchTerm}%`, `%${searchTerm}%`]);
+      ORDER BY u.name ASC
+      LIMIT ? OFFSET ?
+    `, [`%${searchTerm}%`, `%${searchTerm}%`, limit, offset]);
     return result as unknown as User[];
   }
 
@@ -229,13 +233,24 @@ class DatabaseService {
         ) as address
       FROM users u
       LEFT JOIN addresses a ON u.id = a.user_id
+      ORDER BY u.name ASC
       LIMIT ? OFFSET ?
     `, [limit, offset]);
     return result as unknown as User[];
   }
 
-  async getTotalUsersCount(): Promise<number> {
-    const result = await this.query('SELECT COUNT(*) as count FROM users');
+  async getTotalUsersCount(searchTerm: string = ''): Promise<number> {
+    let result: Record<string, unknown>[];
+
+    if (searchTerm.trim()) {
+      result = await this.query(
+        `SELECT COUNT(*) as count FROM users WHERE name LIKE ? OR email LIKE ?`,
+        [`%${searchTerm}%`, `%${searchTerm}%`]
+      );
+    } else {
+      result = await this.query('SELECT COUNT(*) as count FROM users');
+    }
+
     return (result[0]?.count as number) || 0;
   }
 

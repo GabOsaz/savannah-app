@@ -19,6 +19,7 @@
     --color-gray-200: #E9EAEB;
     --color-brand-50: #F9F5FF;
     --color-brand-600: #7F56D9;
+    --color-brand-300: #8a7da7;
   }
 }
 
@@ -72,13 +73,57 @@ button:disabled {
 }
 .lds-ellipsis div {
   position: absolute;
+  top: 0px;
   top: 33.33333px;
   width: 13.33333px;
   height: 13.33333px;
   border-radius: 50%;
-  background: var(--color-brand-600);
+  background: var(--color-brand-300);
   animation-timing-function: cubic-bezier(0, 1, 1, 0);
 }
+
+/* -------------------------- */
+/* For button */
+.lds-ellipsis-button,
+.lds-ellipsis-button div {
+  box-sizing: border-box;
+}
+.lds-ellipsis-button {
+  margin-left: 4px;
+  width: 40px;
+  height: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: start;
+}
+.lds-ellipsis-button div {
+  display: flex;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: white;
+  animation-timing-function: cubic-bezier(0, 1, 1, 0);
+}
+
+.lds-ellipsis-button div:nth-child(1) {
+  display: flex;
+  animation: lds-ellipsis1 0.6s infinite;
+}
+.lds-ellipsis-button div:nth-child(2) {
+  display: flex;
+  animation: lds-ellipsis2-button 0.6s infinite;
+}
+.lds-ellipsis-button div:nth-child(3) {
+  display: flex;
+  animation: lds-ellipsis2-button 0.6s infinite;
+}
+.lds-ellipsis-button div:nth-child(4) {
+  display: flex;
+  animation: lds-ellipsis3 0.6s infinite;
+}
+
+/* -------------------------- */
+
 .lds-ellipsis div:nth-child(1) {
   left: 8px;
   animation: lds-ellipsis1 0.6s infinite;
@@ -117,6 +162,15 @@ button:disabled {
   }
   100% {
     transform: translate(24px, 0);
+  }
+}
+
+@keyframes lds-ellipsis2-button {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(7px, 0);
   }
 }
 

@@ -19,9 +19,7 @@ class DatabaseService {
       
       // Create database instance
       this.db = new this.sql.Database(new Uint8Array(arrayBuffer));
-      
-      console.log('Database initialized successfully');
-    } catch (error) {
+          } catch (error) {
       console.error('Failed to initialize database:', error);
       throw error;
     }
@@ -111,11 +109,9 @@ class DatabaseService {
     // Check if posts table exists and get its schema
     try {
       const tableNames = await this.getTableNames();
-      console.log('Available tables:', tableNames);
+      // console.log('Available tables:', tableNames);
       
       if (tableNames.includes('posts')) {
-        const postsSchema = await this.getTableSchema('posts');
-        console.log('Posts table schema:', postsSchema);
         
         // Build query based on actual columns
         const posts = await this.query(`
@@ -135,7 +131,6 @@ class DatabaseService {
           posts: posts as unknown as Post[]
         };
       } else {
-        console.log('Posts table not found');
         return {
           user,
           posts: []

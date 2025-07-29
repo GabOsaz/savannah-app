@@ -20,9 +20,14 @@ const useUserDetailsCompLogic = () => {
 
   const user = data?.user || null;
   const posts = data?.posts || [];
-  console.log(posts);
 
-  const isCreatePostButtonDisabled = !id || !postDetails.title.trim() || !postDetails.content.trim() || isCreatingPost;
+  const MAX_TITLE_LEN = 25;
+  const isCreatePostButtonDisabled =
+    !id ||
+    !postDetails.title.trim() ||
+    postDetails.title.length >= MAX_TITLE_LEN ||
+    !postDetails.content.trim() ||
+    isCreatingPost;
 
   const handleCreatePost = async (postDetails: { title: string; content: string }) => {
     if (!id || !postDetails.title.trim() || !postDetails.content.trim()) return;

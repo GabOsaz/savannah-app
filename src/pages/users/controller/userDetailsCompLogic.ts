@@ -5,6 +5,7 @@ import {
 } from "../model/mutations/usePostMutations";
 import { useGetUserWithPosts } from "../model/queries/useUserWithPosts";
 import { useState } from "react";
+import { toast } from "sonner";
 
 const useUserDetailsCompLogic = () => {
   const { id } = useParams();
@@ -51,6 +52,7 @@ const useUserDetailsCompLogic = () => {
       await deletePostMutation(postId);
     } catch (error) {
       console.error("Failed to delete post:", error);
+      toast.error("Failed to delete post");
     }
   };
 

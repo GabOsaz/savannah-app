@@ -182,16 +182,31 @@ class DatabaseService {
     }
   }
 
-  async deletePost(postId: string): Promise<boolean> {
+  async deletePost(postId: string): Promise<Post | null> {
     try {
-      await this.query(`
-        DELETE FROM posts WHERE id = ?
+      // Fetch the post before deleting so we can return it later
+      const existingPost = await this.query(
+        `
+        SELECT 
+          id,
+          title,
+          body as content,
+          user_id,
+          created_at
+        FROM posts
+        WHERE id = ?
+        LIMIT 1
       `, [postId]);
-      
-      return true;
+
+      const deletedPost = (existingPost[0] as unknown as Post) || null;
+
+      // Delete the post
+      await this.query(`DELETE FROM posts WHERE id = ?`, [postId]);
+
+      return deletedPost;
     } catch (error) {
       console.error('Error deleting post:', error);
-      return false;
+      return null;
     }
   }
 

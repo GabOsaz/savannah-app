@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import databaseService from '../../../../services/database';
 import type { Post, User } from '../../../../services/types';
 import { ensureDatabaseInitialized } from '../../../../utils/database';
+import { toast } from 'sonner';
 
 interface UserWithPosts {
   user: User | null;
@@ -38,14 +39,26 @@ export const useDeletePost = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (postId: string) => {
+    mutationFn: async (postId: string): Promise<Post | null> => {
       await ensureDatabaseInitialized();
       return await databaseService.deletePost(postId);
     },
-    onSuccess: (success) => {
-      if (success) {
-        // Invalidate all user queries to refetch data
-        queryClient.invalidateQueries({ queryKey: ['user'] });
+    onSuccess: (deletedPost) => {
+      if (deletedPost) {
+        queryClient.invalidateQueries({ queryKey: ['user', deletedPost.user_id, 'with-posts'] });
+
+        // Optimistically remove the post from any cached data if present
+        queryClient.setQueryData(['user', deletedPost.user_id, 'with-posts'], (oldData: UserWithPosts | undefined) => {
+          if (oldData) {
+            return {
+              ...oldData,
+              posts: oldData.posts.filter((p) => p.id !== deletedPost.id),
+            };
+          }
+          return oldData;
+        });
+
+        toast.success(`Successfully deleted post: ${deletedPost.title}`);
       }
     },
   });

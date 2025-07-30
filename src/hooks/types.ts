@@ -24,7 +24,7 @@ export interface User {
     getUserById: (id: string) => Promise<User | null>;
     getUserWithPosts: (id: string) => Promise<{ user: User | null; posts: Post[] }>;
     createPost: (userId: string, title: string, content: string) => Promise<Post | null>;
-    deletePost: (postId: string) => Promise<boolean>;
+    deletePost: (postId: string) => Promise<Post | null>;
     searchUsers: (searchTerm: string) => Promise<void>;
     getUsersWithPagination: (limit: number, offset: number) => Promise<void>;
     getTotalUsersCount: () => Promise<void>;

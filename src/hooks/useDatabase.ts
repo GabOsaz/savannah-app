@@ -75,13 +75,13 @@ export const useDatabase = (): UseDatabaseReturn => {
     }
   }, []);
 
-  const deletePost = useCallback(async (postId: string): Promise<boolean> => {
+  const deletePost = useCallback(async (postId: string): Promise<Post | null> => {
     try {
       setError(null);
       return await databaseService.deletePost(postId);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to delete post');
-      return false;
+      return null;
     }
   }, []);
 
